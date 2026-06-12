@@ -70,7 +70,7 @@
   function renderPatterns() {
     patternsList.innerHTML = '';
     if (patterns.length === 0) {
-      patternsList.innerHTML = '<p style="color:#555;font-size:12px;">Keine eigenen Muster definiert.</p>';
+      patternsList.innerHTML = '<p style="color:#555;font-size:12px;">No custom patterns defined.</p>';
       return;
     }
     patterns.forEach((p, i) => {
@@ -130,7 +130,7 @@
         [STORAGE_KEYS.patterns]: patterns,
       },
       () => {
-        showStatus('✅ Gespeichert', 'ok');
+        showStatus('✅ Saved', 'ok');
       }
     );
   }
@@ -162,7 +162,7 @@
     const ext = normalizeExt(blockedInput.value);
     if (!ext) return;
     if (blocked.includes(ext)) {
-      showStatus(`${ext} ist bereits blockiert`, 'err');
+      showStatus(`${ext} is already blocked`, 'err');
       return;
     }
     blocked.push(ext);
@@ -175,7 +175,7 @@
     const ext = normalizeExt(allowedInput.value);
     if (!ext) return;
     if (allowed.includes(ext)) {
-      showStatus(`${ext} ist bereits erlaubt`, 'err');
+      showStatus(`${ext} is already allowed`, 'err');
       return;
     }
     allowed.push(ext);
@@ -192,7 +192,7 @@
     try {
       new RegExp(regex, 'g');
     } catch (e) {
-      showStatus(`Ungültiges Regex: ${e.message}`, 'err');
+      showStatus(`Invalid regex: ${e.message}`, 'err');
       return;
     }
 
@@ -219,7 +219,7 @@
     blocked = [...DEFAULT_BLOCKED];
     save();
     renderAll();
-    showStatus('Blocklist auf Standard zurückgesetzt', 'ok');
+    showStatus('Blocklist reset to defaults', 'ok');
   });
 
   // ── Init ─────────────────────────────────────────────────────────────

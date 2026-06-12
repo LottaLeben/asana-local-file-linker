@@ -88,7 +88,7 @@
     try {
       const response = await chrome.runtime.sendMessage({ type: 'OPEN_PATH', path });
       if (response?.success && response.method === 'native') {
-        showToast(`✅ Geöffnet: ${path.split('/').pop() || path}`);
+        showToast(`✅ Opened: ${path.split('/').pop() || path}`);
         return;
       }
     } catch {
@@ -97,7 +97,7 @@
 
     // 2. Fallback: copy to clipboard
     await copyToClipboard(path);
-    showToast(`📋 Pfad kopiert — Finder: ⌘+Shift+G → Einfügen`);
+    showToast(`📋 Path copied — Finder: ⌘+Shift+G → Paste`);
   }
 
   // ── Scanner ───────────────────────────────────────────────────────────

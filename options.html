@@ -1,65 +1,65 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Asana Local File Linker — Einstellungen</title>
+  <title>Asana Local File Linker — Settings</title>
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
   <div class="container">
     <header>
       <h1>📂 Asana Local File Linker</h1>
-      <p class="subtitle">Einstellungen</p>
+      <p class="subtitle">Settings</p>
     </header>
 
     <!-- Blocked Extensions -->
     <section class="card">
-      <h2>🚫 Blockierte Dateitypen</h2>
+      <h2>🚫 Blocked File Types</h2>
       <p class="hint">
-        Diese Endungen werden <strong>nicht</strong> geöffnet (Sicherheit).
-        Entferne Einträge, wenn du sie für sicher hältst.
+        These extensions will <strong>not</strong> be opened (security).
+        Remove entries if you consider them safe.
       </p>
       <div class="tag-input-group">
         <div id="blocked-tags" class="tag-container"></div>
         <div class="input-row">
           <input type="text" id="blocked-input" placeholder=".docm" autocomplete="off">
-          <button id="blocked-add" class="btn btn-secondary">Hinzufügen</button>
+          <button id="blocked-add" class="btn btn-secondary">Add</button>
         </div>
       </div>
-      <button id="blocked-reset" class="btn btn-ghost">Auf Standard zurücksetzen</button>
+      <button id="blocked-reset" class="btn btn-ghost">Reset to Defaults</button>
     </section>
 
     <!-- Allowed Extensions (Whitelist) -->
     <section class="card">
-      <h2>✅ Erlaubte Dateitypen (Whitelist)</h2>
+      <h2>✅ Allowed File Types (Whitelist)</h2>
       <p class="hint">
-        Einträge hier <strong>überschreiben</strong> die Blocklist.
-        Nutze dies für Dateitypen, die du bewusst freigeben möchtest.
+        Entries here <strong>override</strong> the blocklist.
+        Use this for file types you explicitly want to allow.
       </p>
       <div class="tag-input-group">
         <div id="allowed-tags" class="tag-container"></div>
         <div class="input-row">
           <input type="text" id="allowed-input" placeholder=".sh" autocomplete="off">
-          <button id="allowed-add" class="btn btn-secondary">Hinzufügen</button>
+          <button id="allowed-add" class="btn btn-secondary">Add</button>
         </div>
       </div>
     </section>
 
     <!-- Custom Path Patterns -->
     <section class="card">
-      <h2>🔍 Eigene Pfadmuster</h2>
+      <h2>🔍 Custom Path Patterns</h2>
       <p class="hint">
-        Zusätzliche Regex-Muster, um Pfade in Asana zu erkennen.
-        Die Standard-Muster (/Users, /Volumes, C:\, \\server) sind immer aktiv.
+        Additional regex patterns to detect paths in Asana.
+        The default patterns (/Users, /Volumes, C:\, \\server) are always active.
       </p>
       <div id="patterns-list" class="patterns-list"></div>
       <div class="input-row">
-        <input type="text" id="pattern-input" placeholder="z.B. /data/projects/\S+" autocomplete="off">
-        <input type="text" id="pattern-label" placeholder="Beschreibung (optional)" autocomplete="off">
-        <button id="pattern-add" class="btn btn-secondary">Hinzufügen</button>
+        <input type="text" id="pattern-input" placeholder="e.g. /data/projects/\S+" autocomplete="off">
+        <input type="text" id="pattern-label" placeholder="Description (optional)" autocomplete="off">
+        <button id="pattern-add" class="btn btn-secondary">Add</button>
       </div>
       <p class="hint hint-small">
-        Tipp: Muster werden als JavaScript-Regex interpretiert. Backslashes doppelt schreiben: <code>\\\\server</code>
+        Tip: Patterns are interpreted as JavaScript regex. Double your backslashes: <code>\\\\server</code>
       </p>
     </section>
 
