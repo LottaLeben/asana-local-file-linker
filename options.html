@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Asana Local File Linker — Einstellungen</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📂 Asana Local File Linker</h1>
+      <p class="subtitle">Einstellungen</p>
+    </header>
+
+    <!-- Blocked Extensions -->
+    <section class="card">
+      <h2>🚫 Blockierte Dateitypen</h2>
+      <p class="hint">
+        Diese Endungen werden <strong>nicht</strong> geöffnet (Sicherheit).
+        Entferne Einträge, wenn du sie für sicher hältst.
+      </p>
+      <div class="tag-input-group">
+        <div id="blocked-tags" class="tag-container"></div>
+        <div class="input-row">
+          <input type="text" id="blocked-input" placeholder=".docm" autocomplete="off">
+          <button id="blocked-add" class="btn btn-secondary">Hinzufügen</button>
+        </div>
+      </div>
+      <button id="blocked-reset" class="btn btn-ghost">Auf Standard zurücksetzen</button>
+    </section>
+
+    <!-- Allowed Extensions (Whitelist) -->
+    <section class="card">
+      <h2>✅ Erlaubte Dateitypen (Whitelist)</h2>
+      <p class="hint">
+        Einträge hier <strong>überschreiben</strong> die Blocklist.
+        Nutze dies für Dateitypen, die du bewusst freigeben möchtest.
+      </p>
+      <div class="tag-input-group">
+        <div id="allowed-tags" class="tag-container"></div>
+        <div class="input-row">
+          <input type="text" id="allowed-input" placeholder=".sh" autocomplete="off">
+          <button id="allowed-add" class="btn btn-secondary">Hinzufügen</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Custom Path Patterns -->
+    <section class="card">
+      <h2>🔍 Eigene Pfadmuster</h2>
+      <p class="hint">
+        Zusätzliche Regex-Muster, um Pfade in Asana zu erkennen.
+        Die Standard-Muster (/Users, /Volumes, C:\, \\server) sind immer aktiv.
+      </p>
+      <div id="patterns-list" class="patterns-list"></div>
+      <div class="input-row">
+        <input type="text" id="pattern-input" placeholder="z.B. /data/projects/\S+" autocomplete="off">
+        <input type="text" id="pattern-label" placeholder="Beschreibung (optional)" autocomplete="off">
+        <button id="pattern-add" class="btn btn-secondary">Hinzufügen</button>
+      </div>
+      <p class="hint hint-small">
+        Tipp: Muster werden als JavaScript-Regex interpretiert. Backslashes doppelt schreiben: <code>\\\\server</code>
+      </p>
+    </section>
+
+    <!-- Status -->
+    <div id="status" class="status"></div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

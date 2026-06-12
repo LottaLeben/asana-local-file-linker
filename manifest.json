@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Asana Local File Linker",
+  "version": "0.1.0",
+  "description": "Macht lokale Dateipfade in Asana-Aufgaben klickbar. Alt+Klick öffnet die Datei direkt mit der Standard-App.",
+  "permissions": ["nativeMessaging", "storage"],
+  "host_permissions": [
+    "https://app.asana.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://app.asana.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {}
+}
