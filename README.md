@@ -2,7 +2,7 @@
 
 **Chrome extension that detects local file paths in Asana tasks and opens them with a single click.**
 
-> ⚠️ **Alpha Release** — Functional but not yet on the Chrome Web Store. Manual installation required.
+> ⚠️ **Alpha Release** — Functional. Manual installation required (see below).
 
 ---
 
