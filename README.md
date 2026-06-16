@@ -61,7 +61,12 @@ That's it. No configuration needed.
 
 #### Windows
 
-> ⏳ Windows installer coming in a future release. Currently macOS and Linux only.
+Requires [Python 3](https://www.python.org/downloads/) installed and on PATH.
+
+```cmd
+cd asana-local-file-linker\native-host
+install.bat
+```
 
 ### Step 3 — Test
 
@@ -118,8 +123,10 @@ asana-local-file-linker/
 ├── background.js          # Service worker (Native Messaging bridge)
 ├── options.html/css/js    # Settings page
 ├── native-host/
-│   ├── file_opener.py     # Native host — opens files via `open`
-│   └── install.sh         # Registers the native host with Chrome
+│   ├── file_opener.py     # Native host — opens files
+│   ├── file_opener.bat    # Windows wrapper for file_opener.py
+│   ├── install.sh         # Installer for macOS / Linux
+│   └── install.bat        # Installer for Windows
 ├── LICENSE                # MIT
 └── README.md              # This file
 ```
