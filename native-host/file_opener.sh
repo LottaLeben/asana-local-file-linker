@@ -8,7 +8,8 @@
 # Zero external dependencies — pure bash + coreutils.
 # ─────────────────────────────────────────────────────────────────────────
 
-set -euo pipefail
+# Do NOT use set -euo pipefail — the script must always respond,
+# even if individual commands fail.
 
 # ── Hardcoded blocklist (defense-in-depth, extension also checks) ────────
 
@@ -24,19 +25,22 @@ BLOCKED_EXTS=(
 # ── Native Messaging Protocol ────────────────────────────────────────────
 
 read_message() {
-  # Read 4-byte little-endian length prefix
+  # Read 4-byte little-endian length prefix using od (POSIX standard)
   local raw
-  raw=$(dd bs=1 count=4 2>/dev/null | xxd -p)
+  raw=$(/bin/dd bs=4 count=1 2>/dev/null | /usr/bin/od -A n -t u1 | /usr/bin/tr -s ' ')
   [ -z "$raw" ] && return 1
 
-  # Convert little-endian hex to decimal
-  local b0="${raw:0:2}" b1="${raw:2:2}" b2="${raw:4:2}" b3="${raw:6:2}"
-  local length=$(( 16#$b3 * 16777216 + 16#$b2 * 65536 + 16#$b1 * 256 + 16#$b0 ))
-  [ "$length" -eq 0 ] && return 1
-  [ "$length" -gt 1048576 ] && return 1  # 1MB safety limit
+  # Parse the 4 unsigned bytes (little-endian)
+  local b0 b1 b2 b3
+  read -r b0 b1 b2 b3 <<< "$raw"
+  [ -z "$b0" ] && return 1
+
+  local length=$(( b0 + b1 * 256 + b2 * 65536 + b3 * 16777216 ))
+  [ "$length" -eq 0 ] 2>/dev/null && return 1
+  [ "$length" -gt 1048576 ] 2>/dev/null && return 1
 
   # Read the JSON body
-  dd bs=1 count="$length" 2>/dev/null
+  /bin/dd bs="$length" count=1 2>/dev/null
 }
 
 send_message() {
@@ -44,10 +48,12 @@ send_message() {
   local len=${#msg}
 
   # Write 4-byte little-endian length prefix
-  printf "\\x$(printf '%02x' $((len & 0xFF)))"
-  printf "\\x$(printf '%02x' $(((len >> 8) & 0xFF)))"
-  printf "\\x$(printf '%02x' $(((len >> 16) & 0xFF)))"
-  printf "\\x$(printf '%02x' $(((len >> 24) & 0xFF)))"
+  local b0=$(( len & 0xFF ))
+  local b1=$(( (len >> 8) & 0xFF ))
+  local b2=$(( (len >> 16) & 0xFF ))
+  local b3=$(( (len >> 24) & 0xFF ))
+
+  printf "$(printf '\\%03o\\%03o\\%03o\\%03o' "$b0" "$b1" "$b2" "$b3")"
   printf '%s' "$msg"
 }
 
@@ -63,7 +69,8 @@ send_success() {
 
 json_get() {
   local key="$1" json="$2"
-  echo "$json" | grep -o "\"$key\"[[:space:]]*:[[:space:]]*\"[^\"]*\"" | sed "s/\"$key\"[[:space:]]*:[[:space:]]*\"//;s/\"$//" | head -1
+  # Match "key" : "value" — handles spaces around colon
+  echo "$json" | /usr/bin/grep -o "\"$key\"[[:space:]]*:[[:space:]]*\"[^\"]*\"" | /usr/bin/sed "s/\"$key\"[[:space:]]*:[[:space:]]*\"//;s/\"$//" | head -1
 }
 
 # ── Security checks ─────────────────────────────────────────────────────
@@ -71,7 +78,7 @@ json_get() {
 is_blocked() {
   local path="$1"
   local ext
-  ext=".$(echo "${path##*.}" | tr '[:upper:]' '[:lower:]')"
+  ext=".$(echo "${path##*.}" | /usr/bin/tr '[:upper:]' '[:lower:]')"
 
   for blocked in "${BLOCKED_EXTS[@]}"; do
     [ "$ext" = "$blocked" ] && return 0
@@ -89,38 +96,51 @@ is_blocked() {
 
 main() {
   local json
-  json=$(read_message) || { send_error "No message received"; exit 0; }
+  json=$(read_message)
+  if [ -z "$json" ]; then
+    send_error "No message received"
+    exit 0
+  fi
 
   local path
   path=$(json_get "path" "$json")
-  [ -z "$path" ] && { send_error "No path provided"; exit 0; }
+  if [ -z "$path" ]; then
+    send_error "No path provided"
+    exit 0
+  fi
 
   # Resolve symlinks
   local real_path
   if command -v realpath &>/dev/null; then
     real_path=$(realpath "$path" 2>/dev/null || echo "$path")
-  elif command -v readlink &>/dev/null; then
-    real_path=$(readlink -f "$path" 2>/dev/null || echo "$path")
+  elif [ -x /usr/bin/readlink ]; then
+    real_path=$(/usr/bin/readlink -f "$path" 2>/dev/null || echo "$path")
   else
     real_path="$path"
   fi
 
   # Check existence
-  [ ! -e "$real_path" ] && { send_error "Not found: $path"; exit 0; }
+  if [ ! -e "$real_path" ]; then
+    send_error "Not found: $path"
+    exit 0
+  fi
 
   # Check blocklist
-  is_blocked "$real_path" && { send_error "Blocked: .${real_path##*.} (add to whitelist in extension settings to override)"; exit 0; }
+  if is_blocked "$real_path"; then
+    send_error "Blocked: .${real_path##*.} (add to whitelist in extension settings to override)"
+    exit 0
+  fi
 
   # Open with default app
-  case "$(uname -s)" in
+  case "$(/usr/bin/uname -s)" in
     Darwin)
-      open -- "$real_path" 2>/dev/null || { send_error "Failed to open file"; exit 0; }
+      /usr/bin/open -- "$real_path" 2>/dev/null
       ;;
     Linux)
       xdg-open -- "$real_path" 2>/dev/null &
       ;;
     *)
-      send_error "Unsupported platform: $(uname -s)"
+      send_error "Unsupported platform"
       exit 0
       ;;
   esac
