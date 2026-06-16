@@ -13,7 +13,7 @@ EXTENSION_ID="oiepccloocceeiadchmihbdplbjaccgh"
 
 # Paths
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-HOST_PATH="$SCRIPT_DIR/file_opener.py"
+HOST_PATH="$SCRIPT_DIR/file_opener.sh"
 HOST_NAME="com.alfl.file_opener"
 
 # Detect OS and set target directory

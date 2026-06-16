@@ -1,4 +1,4 @@
 @echo off
-:: file_opener.bat — Windows wrapper for the Python native messaging host.
+:: file_opener.bat — Windows wrapper for the PowerShell native messaging host.
 :: Chrome on Windows requires a .bat or .exe as the native host executable.
-python "%~dp0file_opener.py"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0file_opener.ps1"

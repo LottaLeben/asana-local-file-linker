@@ -61,8 +61,6 @@ That's it. No configuration needed.
 
 #### Windows
 
-Requires [Python 3](https://www.python.org/downloads/) installed and on PATH.
-
 ```cmd
 cd asana-local-file-linker\native-host
 install.bat
@@ -93,7 +91,7 @@ Right-click the extension icon → **"Options"**
 
 ```
 Asana text → CSS Highlight API (blue highlight) → Alt+Click →
-→ Chrome Native Messaging → Python script → macOS `open` → file opens
+→ Chrome Native Messaging → native host script → file opens
 ```
 
 ### Why this architecture?
@@ -108,8 +106,9 @@ Asana text → CSS Highlight API (blue highlight) → Alt+Click →
 - ❌ No access to Asana credentials or API tokens
 - ✅ Blocklist for dangerous file types (`.exe`, `.app`, `.command`, `.sh`, etc.)
 - ✅ Whitelist override configurable in settings
-- ✅ `os.path.realpath()` prevents symlink attacks
+- ✅ Symlink resolution prevents traversal attacks
 - ✅ Minimal permissions: `nativeMessaging` + `storage` + `app.asana.com` only
+- ✅ Zero external dependencies — pure bash (macOS/Linux) + PowerShell (Windows)
 
 ---
 
@@ -122,9 +121,11 @@ asana-local-file-linker/
 ├── content.css            # CSS Highlight API styles + toast
 ├── background.js          # Service worker (Native Messaging bridge)
 ├── options.html/css/js    # Settings page
+├── icons/                 # Extension icons (16/48/128px)
 ├── native-host/
-│   ├── file_opener.py     # Native host — opens files
-│   ├── file_opener.bat    # Windows wrapper for file_opener.py
+│   ├── file_opener.sh     # Native host for macOS / Linux (bash)
+│   ├── file_opener.ps1    # Native host for Windows (PowerShell)
+│   ├── file_opener.bat    # Windows wrapper for Chrome
 │   ├── install.sh         # Installer for macOS / Linux
 │   └── install.bat        # Installer for Windows
 ├── LICENSE                # MIT
