@@ -206,7 +206,7 @@
 
   function handleMouseMove(event) {
     const path = pathAtPoint(event.clientX, event.clientY);
-    document.body.style.cursor = path ? 'pointer' : '';
+    document.body.classList.toggle('alfl-cursor-pointer', !!path);
   }
 
   let moveTimer = null;
