@@ -54,16 +54,73 @@
 
   // ── Render functions ──────────────────────────────────────────────────
 
-  function renderTags(container, items, removeCallback) {
+  // ── Drag & Drop state ─────────────────────────────────────────────────
+
+  let dragData = null; // { ext, sourceList: 'blocked'|'allowed' }
+
+  function getListByName(name) {
+    return name === 'blocked' ? blocked : allowed;
+  }
+
+  function renderTags(container, items, listName, removeCallback) {
     container.innerHTML = '';
     items.sort().forEach((item, i) => {
       const tag = document.createElement('span');
       tag.className = 'tag';
+      tag.draggable = true;
       tag.innerHTML = `${escapeHtml(item)}<span class="tag-remove" data-index="${i}">×</span>`;
+
+      tag.addEventListener('dragstart', (e) => {
+        dragData = { ext: item, sourceList: listName };
+        tag.classList.add('tag--dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+
+      tag.addEventListener('dragend', () => {
+        tag.classList.remove('tag--dragging');
+        dragData = null;
+      });
+
       tag.querySelector('.tag-remove').addEventListener('click', () => {
         removeCallback(i);
       });
+
       container.appendChild(tag);
+    });
+  }
+
+  function setupDropZone(container, targetListName) {
+    container.addEventListener('dragover', (e) => {
+      if (!dragData || dragData.sourceList === targetListName) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      container.classList.add('tag-container--dragover');
+    });
+
+    container.addEventListener('dragleave', () => {
+      container.classList.remove('tag-container--dragover');
+    });
+
+    container.addEventListener('drop', (e) => {
+      e.preventDefault();
+      container.classList.remove('tag-container--dragover');
+      if (!dragData || dragData.sourceList === targetListName) return;
+
+      const { ext, sourceList } = dragData;
+      const source = getListByName(sourceList);
+      const target = getListByName(targetListName);
+
+      // Remove from source
+      const idx = source.indexOf(ext);
+      if (idx !== -1) source.splice(idx, 1);
+
+      // Add to target (avoid duplicates)
+      if (!target.includes(ext)) target.push(ext);
+
+      dragData = null;
+      save();
+      renderAll();
+      showStatus(`Moved ${ext} to ${targetListName === 'allowed' ? 'whitelist' : 'blocklist'}`, 'ok');
     });
   }
 
@@ -91,15 +148,15 @@
   }
 
   function renderAll() {
-    renderTags(blockedTags, blocked, (i) => {
+    renderTags(blockedTags, blocked, 'blocked', (i) => {
       blocked.splice(i, 1);
       save();
-      renderTags(blockedTags, blocked, arguments.callee);
+      renderAll();
     });
-    renderTags(allowedTags, allowed, (i) => {
+    renderTags(allowedTags, allowed, 'allowed', (i) => {
       allowed.splice(i, 1);
       save();
-      renderTags(allowedTags, allowed, arguments.callee);
+      renderAll();
     });
     renderPatterns();
   }
@@ -224,5 +281,7 @@
 
   // ── Init ─────────────────────────────────────────────────────────────
 
+  setupDropZone(blockedTags, 'blocked');
+  setupDropZone(allowedTags, 'allowed');
   load();
 })();

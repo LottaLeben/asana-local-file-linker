@@ -156,6 +156,22 @@ kbd {
   color: #ff6b6b;
 }
 
+.tag[draggable="true"] {
+  cursor: grab;
+}
+
+.tag--dragging {
+  opacity: 0.4;
+}
+
+.tag-container--dragover {
+  background: rgba(30, 111, 255, 0.08);
+  border: 1px dashed #1e6fff;
+  border-radius: 8px;
+  padding: 4px;
+  margin: -5px;
+}
+
 /* ── Pattern List ────────────────────────────────────────────────────── */
 
 .patterns-list {
