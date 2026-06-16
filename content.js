@@ -47,22 +47,22 @@
 
   // ── Toast ─────────────────────────────────────────────────────────────
 
-  function showToast(message) {
+  function showToast(message, type) {
     let toast = document.getElementById('alfl-toast');
     if (!toast) {
       toast = document.createElement('div');
       toast.id = 'alfl-toast';
-      toast.className = 'alfl-toast';
       document.body.appendChild(toast);
     }
     toast.textContent = message;
-    toast.classList.remove('alfl-toast--visible');
+    toast.className = 'alfl-toast';
+    if (type) toast.classList.add(`alfl-toast--${type}`);
     toast.offsetHeight; // reflow
     toast.classList.add('alfl-toast--visible');
     clearTimeout(toast._timer);
     toast._timer = setTimeout(() => {
       toast.classList.remove('alfl-toast--visible');
-    }, 3000);
+    }, type === 'warn' ? 5000 : 3000);
   }
 
   // ── Clipboard ─────────────────────────────────────────────────────────
@@ -87,8 +87,29 @@
     // 1. Try native host (opens file directly on the local machine)
     try {
       const response = await chrome.runtime.sendMessage({ type: 'OPEN_PATH', path });
-      if (response?.success && response.method === 'native') {
-        showToast(`✅ Opened: ${path.split('/').pop() || path}`);
+
+      if (response?.method === 'native') {
+        if (response.success) {
+          showToast(`✅ Opened: ${path.split('/').pop() || path}`, 'ok');
+          return;
+        }
+
+        const err = response.error || 'Unknown error';
+
+        // Blocked by security settings
+        if (err.includes('Blocked')) {
+          showToast(`🚫 Blocked file type — check extension settings to allow`, 'warn');
+          return;
+        }
+
+        // File not found
+        if (err.includes('Not found')) {
+          showToast(`❌ File not found: ${path.split('/').pop() || path}`, 'err');
+          return;
+        }
+
+        // Other native host error
+        showToast(`⚠️ ${err}`, 'err');
         return;
       }
     } catch {

@@ -45,6 +45,43 @@ h1 {
   margin-bottom: 20px;
 }
 
+.card-guide {
+  border-color: #1e6fff33;
+  background: #12122a;
+}
+
+.guide-steps {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.guide-steps li {
+  font-size: 14px;
+  color: #ccc;
+  line-height: 1.8;
+}
+
+.demo-highlight {
+  background-color: rgba(30, 111, 255, 0.12);
+  color: #1a6aff;
+  text-decoration: underline dotted #1a6aff;
+  text-underline-offset: 2px;
+  padding: 1px 2px;
+  border-radius: 2px;
+}
+
+kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #e0e0e0;
+  background: #252540;
+  border: 1px solid #3a3a5c;
+  border-radius: 4px;
+  box-shadow: 0 1px 0 #1a1a2e;
+}
+
 .card h2 {
   font-size: 16px;
   font-weight: 600;

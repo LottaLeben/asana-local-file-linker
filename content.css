@@ -38,6 +38,20 @@
   transform: translateX(-50%) translateY(0);
 }
 
+.alfl-toast--warn {
+  background: #3d2800;
+  border-left: 3px solid #f5a623;
+}
+
+.alfl-toast--err {
+  background: #2e0d0d;
+  border-left: 3px solid #e74c3c;
+}
+
+.alfl-toast--ok {
+  border-left: 3px solid #27ae60;
+}
+
 /* Force pointer cursor over detected paths (overrides Asana's CSS) */
 body.alfl-cursor-pointer,
 body.alfl-cursor-pointer * {
