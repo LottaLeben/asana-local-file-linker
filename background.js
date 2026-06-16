@@ -13,6 +13,7 @@ const DEFAULT_BLOCKED = [
   '.sh', '.bash', '.zsh', '.csh', '.ksh', '.fish',
   '.py', '.pyw', '.rb', '.pl', '.php',
   '.jar', '.ps1', '.vbs', '.vbe', '.jse', '.wsf',
+  '.docm', '.xlsm', '.pptm', '.dotm',
 ];
 
 async function getSettings() {

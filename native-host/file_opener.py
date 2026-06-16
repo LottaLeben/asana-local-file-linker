@@ -25,6 +25,7 @@ FALLBACK_BLOCKED = frozenset([
     ".sh", ".bash", ".zsh", ".csh", ".ksh", ".fish",
     ".py", ".pyw", ".rb", ".pl", ".php",
     ".jar", ".ps1", ".vbs", ".vbe", ".jse", ".wsf",
+    ".docm", ".xlsm", ".pptm", ".dotm",               # macro-enabled Office
 ])
 
 
@@ -69,11 +70,11 @@ def is_safe_path(path, blocked_exts, allowed_exts):
 def open_path(path):
     system = platform.system()
     if system == "Darwin":
-        result = subprocess.run(["open", path], capture_output=True, text=True)
+        result = subprocess.run(["open", "--", path], capture_output=True, text=True)
         if result.returncode != 0:
             raise OSError(f"open failed: {result.stderr.strip()}")
     elif system == "Linux":
-        subprocess.Popen(["xdg-open", path])
+        subprocess.Popen(["xdg-open", "--", path])
     elif system == "Windows":
         os.startfile(path)
     else:
