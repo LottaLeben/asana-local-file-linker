@@ -90,14 +90,14 @@ Right-click the extension icon → **"Options"**
 ## How It Works
 
 ```
-Asana text → CSS Highlight API (blue highlight) → Alt+Click →
+Asana text → CSS Highlight API (blue highlight) → Alt+Click (Option+Click) →
 → Chrome Native Messaging → native host script → file opens
 ```
 
 ### Why this architecture?
 
 - **CSS Highlight API** — Highlights paths visually without modifying Asana's React DOM. No conflicts with Asana updates.
-- **Alt+Click** — Normal clicking in Asana stays unaffected (editing, navigation). Only deliberate Alt+Click opens files.
+- **Alt+Click / Option+Click** — Normal clicking in Asana stays unaffected (editing, navigation). Only deliberate Alt+Click (Option+Click on Mac) opens files.
 - **Native Messaging** — The only way to open local files from a Chrome extension. Chrome blocks `file://` URLs completely.
 
 ### Security
