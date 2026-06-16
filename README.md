@@ -135,6 +135,13 @@ asana-local-file-linker/
 
 ---
 
+## Disclaimer
+
+This project is an **independent community project** and is **not affiliated with, endorsed by, or supported by [Asana, Inc.](https://asana.com)** "Asana" is a trademark of Asana, Inc. This extension is provided for personal and team use at your own risk.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE. See the [MIT License](LICENSE) for the full terms.
+
+---
 
 ## License
 
