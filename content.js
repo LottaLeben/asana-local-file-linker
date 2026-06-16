@@ -118,7 +118,7 @@
 
     // 2. Fallback: copy to clipboard
     await copyToClipboard(path);
-    showToast(`📋 Path copied — Finder: ⌘+Shift+G → Paste`);
+    showToast(`📋 Path copied — paste in your file manager to open`);
   }
 
   // ── Scanner ───────────────────────────────────────────────────────────

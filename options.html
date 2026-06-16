@@ -18,13 +18,27 @@
       <ol class="guide-steps">
         <li>Open any <strong>Asana task</strong> that contains a local file path in its description or comments</li>
         <li>Recognized paths appear <span class="demo-highlight">highlighted in blue</span> automatically</li>
-        <li>Hold <kbd>⌥ Option</kbd> — the cursor changes to a pointer over paths</li>
-        <li><strong>Option+Click</strong> the path — the file opens in your default app</li>
+        <li>Hold <kbd>Alt</kbd> (Windows/Linux) or <kbd>⌥ Option</kbd> (Mac) — the cursor changes to a pointer over paths</li>
+        <li><strong>Alt+Click</strong> / <strong>Option+Click</strong> the path — the file opens in your default app</li>
       </ol>
-      <p class="hint" style="margin-bottom:0;">
-        Supported by default: <code>/Users/…</code> · <code>/Volumes/…</code> · <code>C:\…</code> · <code>\\server\…</code> · custom URL schemes<br>
-        If the native host is not installed, the path is copied to your clipboard instead.
-      </p>
+      <div class="guide-hints">
+        <p class="hint">
+          <strong>Supported path formats:</strong>
+          <code>/Users/…</code> · <code>/Volumes/…</code> · <code>/home/…</code> ·
+          <code>C:\…</code> · <code>\\server\…</code> · custom URL schemes.
+          Add more via <em>Custom Path Patterns</em> below.
+        </p>
+        <p class="hint">
+          <strong>🚫 Blocked file type?</strong>
+          If a file is blocked for security reasons, you'll see an orange warning.
+          Add the extension to the <em>Allowed File Types</em> list below to override.
+        </p>
+        <p class="hint" style="margin-bottom:0;">
+          <strong>📋 Clipboard fallback:</strong>
+          If the native host is not installed, the path is copied to your clipboard instead.
+          Use <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd> (Mac Finder) or <kbd>Win</kbd>+<kbd>R</kbd> (Windows) to navigate to it.
+        </p>
+      </div>
     </section>
 
     <!-- Blocked Extensions -->
