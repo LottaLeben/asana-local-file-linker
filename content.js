@@ -205,6 +205,10 @@
   // ── Cursor hint on hover ──────────────────────────────────────────────
 
   function handleMouseMove(event) {
+    if (!event.altKey) {
+      document.body.classList.remove('alfl-cursor-pointer');
+      return;
+    }
     const path = pathAtPoint(event.clientX, event.clientY);
     document.body.classList.toggle('alfl-cursor-pointer', !!path);
   }
