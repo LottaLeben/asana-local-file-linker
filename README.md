@@ -46,25 +46,22 @@ Additional patterns can be defined in the extension **settings**.
 4. Click **"Load unpacked"**
 5. Select the `asana-local-file-linker` folder
 
-The extension appears in the list. Note down the **Extension ID** (e.g. `efodijhnhlfpnncapinlpifldiojmknf`).
+### Step 2 — Install the Native Host
 
-### Step 2 — Install the Native Host (required for opening files)
-
-The extension needs a small local helper to actually open files. Chrome blocks all `file://` navigation for security reasons — the native host bridges this gap.
+The extension needs a small local helper to open files (Chrome blocks `file://` for security). Run once:
 
 #### macOS / Linux
 
 ```bash
 cd asana-local-file-linker/native-host
-chmod +x install.sh file_opener.py
-./install.sh YOUR_EXTENSION_ID
+./install.sh
 ```
 
-Replace `YOUR_EXTENSION_ID` with the ID from Step 1.
+That's it. No configuration needed.
 
 #### Windows
 
-> ⏳ Windows installer coming in a future release. Currently macOS only.
+> ⏳ Windows installer coming in a future release. Currently macOS and Linux only.
 
 ### Step 3 — Test
 

@@ -3,43 +3,39 @@
 # install.sh — Registers the Native Messaging Host for Chrome.
 # Run once after loading the extension.
 #
-# Usage: ./install.sh <extension-id>
+# Usage: ./install.sh
 #
-# The extension ID is shown on chrome://extensions/ when the extension
-# is loaded in developer mode.
 
 set -euo pipefail
 
-EXTENSION_ID="${1:-}"
-
-if [ -z "$EXTENSION_ID" ]; then
-  echo ""
-  echo "╔══════════════════════════════════════════════════════════════════╗"
-  echo "║  Asana Local File Linker — Native Host Installer               ║"
-  echo "╠══════════════════════════════════════════════════════════════════╣"
-  echo "║                                                                ║"
-  echo "║  Usage: ./install.sh <extension-id>                            ║"
-  echo "║                                                                ║"
-  echo "║  Find your extension ID:                                       ║"
-  echo "║  1. Open chrome://extensions/                                  ║"
-  echo "║  2. Find 'Asana Local File Linker'                             ║"
-  echo "║  3. Copy the ID (e.g. efodijhnhlfpnncapinlpifldiojmknf)       ║"
-  echo "║                                                                ║"
-  echo "╚══════════════════════════════════════════════════════════════════╝"
-  echo ""
-  exit 1
-fi
+# Fixed extension ID (derived from the key in manifest.json)
+EXTENSION_ID="oiepccloocceeiadchmihbdplbjaccgh"
 
 # Paths
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 HOST_PATH="$SCRIPT_DIR/file_opener.py"
 HOST_NAME="com.alfl.file_opener"
-TARGET_DIR="$HOME/Library/Application Support/Google/Chrome/NativeMessagingHosts"
+
+# Detect OS and set target directory
+case "$(uname -s)" in
+  Darwin)
+    TARGET_DIR="$HOME/Library/Application Support/Google/Chrome/NativeMessagingHosts"
+    ;;
+  Linux)
+    TARGET_DIR="$HOME/.config/google-chrome/NativeMessagingHosts"
+    ;;
+  *)
+    echo "❌ Unsupported OS: $(uname -s)"
+    echo "   Windows users: see README for manual setup."
+    exit 1
+    ;;
+esac
+
 MANIFEST_PATH="$TARGET_DIR/$HOST_NAME.json"
 
 echo ""
-echo "📦 Installing Native Messaging Host..."
-echo "   Extension ID: $EXTENSION_ID"
+echo "📦 Asana Local File Linker — Native Host Installer"
+echo ""
 echo "   Host script:  $HOST_PATH"
 echo "   Manifest:     $MANIFEST_PATH"
 echo ""
@@ -60,10 +56,13 @@ cat > "$MANIFEST_PATH" <<EOF
 }
 EOF
 
-echo "✅ Native Messaging Host installed!"
+# Ensure host script is executable
+chmod +x "$HOST_PATH"
+
+echo "✅ Installed!"
 echo ""
 echo "   Next steps:"
 echo "   1. Reload the extension on chrome://extensions/"
 echo "   2. Reload the Asana tab"
-echo "   3. Click on a file path — it should now open with your default app"
+echo "   3. Alt+Click (Option+Click) on a file path — it should open"
 echo ""

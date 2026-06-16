@@ -3,6 +3,7 @@
   "name": "Asana Local File Linker",
   "version": "0.1.0",
   "description": "Makes local file paths in Asana tasks clickable. Alt+Click opens the file directly with your default app.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxkaM3PA03qD/yMVK19eOkHRAeV0XnHw/YBAr3TCEhWSinE7sJ4Z3aTxQcg7v040tXjpMA2k8hcRWKDq5RQwD060IHQTYtilO7jd6dKTYXwpW+EqJvWyWhV+lChc9XPQsyDDmjFs3vk+6aJag6gwOE6hT2+OMkKKsB0B42TA0JEzXo1SnJkA+aI6QgE7R5VI/GguzO5gG9GmfR75qgAPLrzPvnE+oUrg1gLWVCGLQ0sjQDCpr1W2667d0OmHjE9ib4wVZD4mYLnWb1+kN7vtd+6waxPN8dACN2QalExhau6QcANEEtpQzcFaLtYbswUkQp5j0dKycoKa5J3/i7BJQOwIDAQAB",
   "permissions": ["nativeMessaging", "storage"],
   "host_permissions": [
     "https://app.asana.com/*"
